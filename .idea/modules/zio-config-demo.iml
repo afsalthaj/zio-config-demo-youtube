@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id="zio-config-demo [file:/Users/afsalthaj/telstra/zio-config-demo/]" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
+    <output url="file://$MODULE_DIR$/../../target/scala-2.13/classes" />
+    <output-test url="file://$MODULE_DIR$/../../target/scala-2.13/test-classes" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../..">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/test/scala" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/../../target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.4:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio-config-typesafe_2.13:1.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.typesafe:config:1.4.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio_2.13:1.0.4-2:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio-stacktracer_2.13:1.0.4-2:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio-config_2.13:1.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:izumi-reflect_2.13:1.0.0-M13:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:izumi-reflect-thirdparty-boopickle-shaded_2.13:1.0.0-M13:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.propensive:magnolia_2.13:0.17.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: com.propensive:mercator_2.13:0.2.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio-config-derivation_2.13:1.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: dev.zio:zio-config-magnolia_2.13:1.0.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.scala-lang:scala-reflect:2.13.4:jar" level="project" />
+  </component>
+</module>
