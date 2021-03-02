@@ -1,50 +1,50 @@
 package com.thaj.zconfig.demo
 
+// @afsal2
+
 import zio.config._
 import ConfigDescriptor._
 import zio.config.typesafe.TypesafeConfigSource
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val jsonSource =
+    val json: String =
       s"""
-         |{
-         |   "dataSource" : {
-         |     "DataSource" : {
-         |       "Database" : {
-         |         "host"    : "host",
-         |         "port"    : "123",
-         |         "username": "un",
-         |         "password": "pw",
-         |       }
+         |
+         |  {
+         |   SOURCE : {
+         |     "S3BUCKET" : {
+         |       "BUCKETNAME" : "bucket"
+         |       "PREFIX" : "12"
          |    }
-         |   }
+         |  }
          |
-         |   "region" : "ap-southeast-2"
-         |
+         |  REGION: AUSTRALIA
          |}
          |""".stripMargin
 
-    val sourceEither: Either[ReadError[String], ConfigSource] =
-      TypesafeConfigSource.fromHoconString(jsonSource)
+    val source: Either[ReadError[String], ConfigSource] =
+      TypesafeConfigSource.fromHoconString(json)
 
-    val configResult: Either[ReadError[String], Unit] =
+    val result: Either[ReadError[String], Unit] =
       for {
-        source <- sourceEither
-        applicationConfig <- read(ApplicationConfig.config from source)
-      } yield Core.run(applicationConfig)
+        jsonSource <- source
+        desc = ApplicationConfig.config from jsonSource
+        markdown = generateDocs(desc).toTable.toGithubFlavouredMarkdown
+        _ = println(markdown)
+        result <- read(desc)
+      } yield Core.run(result)
 
-    println(configResult)
+    println(result.swap.map(_.prettyPrint()))
+
   }
 }
 
 object Core {
-  def run(applicationConfig: ApplicationConfig): Unit = {
-    applicationConfig.dataSource match {
-      case database @ ApplicationConfig.DataSource.Database(_, _, _, _) => println(s"Database, ${database}")
-      case ApplicationConfig.DataSource.S3Bucket(bucketName, prefix) => println(s"s3 bucket, ${bucketName}, ${prefix}")
-      case ApplicationConfig.DataSource.Kafka(brokers, topicName) => println(s"kafka. ${brokers}, ${topicName}")
+  def run(applicationConfig: ApplicationConfig): Unit =
+    applicationConfig.source match {
+      case c @ ApplicationConfig.Database(host, port, userName, password) => println(c)
+      case c @ ApplicationConfig.S3Bucket(bucketName, prefix) => println(c)
+      case c @ ApplicationConfig.Kafka(topicName, brokers) => println(c)
     }
-  }
 }
-
