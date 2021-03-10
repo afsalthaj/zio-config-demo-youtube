@@ -1,10 +1,8 @@
 package com.thaj.zconfig.demo
 
-// @afsal2
-
-import zio.config._
-import ConfigDescriptor._
+import zio.config._, ConfigDescriptor._
 import zio.config.typesafe.TypesafeConfigSource
+import zio.config.gen._
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -12,31 +10,31 @@ object Main {
       s"""
          |
          |  {
-         |   SOURCE : {
-         |     "S3BUCKET" : {
-         |       "BUCKETNAME" : "bucket"
-         |       "PREFIX" : "12"
-         |    }
+         |   "source" : {
+         |     "Database" : {
+         |       "host" : "host"
+         |       "port" : "12",
+         |       "userName" :  "un",
+         |       "password" : "pw"
+         |     }
          |  }
          |
-         |  REGION: AUSTRALIA
+         |  "region": "australia"
          |}
          |""".stripMargin
 
     val source: Either[ReadError[String], ConfigSource] =
       TypesafeConfigSource.fromHoconString(json)
 
-    val result: Either[ReadError[String], Unit] =
+    val sourceEither: Either[ReadError[String], Unit] =
       for {
-        jsonSource <- source
-        desc = ApplicationConfig.config from jsonSource
-        markdown = generateDocs(desc).toTable.toGithubFlavouredMarkdown
-        _ = println(markdown)
-        result <- read(desc)
-      } yield Core.run(result)
+        source <- source
+        applicationConfig <- read(ApplicationConfig.config from source)
+        result = gen.generateConfigJson(ApplicationConfig.config, 10).unsafeRunChunk
+        _ = println(result)
+      } yield Core.run(applicationConfig)
 
-    println(result.swap.map(_.prettyPrint()))
-
+    println(sourceEither)
   }
 }
 
