@@ -30,7 +30,7 @@ object Main {
         source <- source
         config = ApplicationConfig.config from source
         applicationConfig <- read(config)
-        _ = scala.io.wri(generateDocs(config).toTable.toGithubFlavouredMarkdown)
+        _ = println(generateDocs(config).toTable.toGithubFlavouredMarkdown)
       } yield Core.run(applicationConfig)
 
     println(sourceEither)
