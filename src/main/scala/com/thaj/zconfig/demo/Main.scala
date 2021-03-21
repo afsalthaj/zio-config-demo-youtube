@@ -2,7 +2,6 @@ package com.thaj.zconfig.demo
 
 import zio.config._, ConfigDescriptor._
 import zio.config.typesafe.TypesafeConfigSource
-import zio.config.gen._
 
 object Main {
   def main(args: Array[String]): Unit = {
@@ -12,9 +11,9 @@ object Main {
          |  {
          |   "source" : {
          |     "Database" : {
-         |       "host" : "host"
-         |       "port" : "12",
-         |       "userName" :  "un",
+         |       "port" : "1024",
+         |       "host" : "sdsdsd"
+         |       "username" :  "un",
          |       "password" : "pw"
          |     }
          |  }
@@ -29,9 +28,9 @@ object Main {
     val sourceEither: Either[ReadError[String], Unit] =
       for {
         source <- source
-        applicationConfig <- read(ApplicationConfig.config from source)
-        result = gen.generateConfigJson(ApplicationConfig.config, 10).unsafeRunChunk
-        _ = println(result)
+        config = ApplicationConfig.config from source
+        applicationConfig <- read(config)
+        _ = scala.io.wri(generateDocs(config).toTable.toGithubFlavouredMarkdown)
       } yield Core.run(applicationConfig)
 
     println(sourceEither)
@@ -41,7 +40,7 @@ object Main {
 object Core {
   def run(applicationConfig: ApplicationConfig): Unit =
     applicationConfig.source match {
-      case c @ ApplicationConfig.Database(host, port, userName, password) => println(c)
+      case c @ ApplicationConfig.Database(host, port, userName, password) => println(c.host.value)
       case c @ ApplicationConfig.S3Bucket(bucketName, prefix) => println(c)
       case c @ ApplicationConfig.Kafka(topicName, brokers) => println(c)
     }
